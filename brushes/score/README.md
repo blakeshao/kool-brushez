@@ -13,32 +13,27 @@ version of the mouse path, so jittery drags still produce clean curves, and
 it behaves like a physical strip: a fast turn rolls it over so the five lines
 pinch together and cross, then it settles flat again once the turn is over.
 
-## Run
+## Run and controls
 
-Open `index.html` in a browser (p5.js loads from a CDN). Open
-`index.html?auto` to start with a fully painted page.
+Run `npm install` and `npm run dev` from the repository root, then choose
+Score in the brush library or open `/?brush=score`.
+The shared app provides mouse, pen and touch input, brush controls, an eraser,
+undo/redo, auto-fill and PNG export. See [the app guide](../../README.md) for
+shortcuts and URL presets, and [the brush interface](../README.md) for the
+module lifecycle.
 
-## Controls
-
-| Key / action | Effect |
-| --- | --- |
-| drag | lay staff lines along the stroke and paint snippets onto them |
-| click | a short horizontal staff patch with one snippet |
-| `1` `2` `3` `4` `5` | lock colour to black / red / blue / green / yellow |
-| `0` | random colour (weighted toward black) |
-| `[` `]` | brush size down / up |
-| `-` `=` | density down / up |
-| `space` | auto-fill the page |
-| `e` | toggle eraser |
-| `g` | hide / show the staff ribbons |
-| `c` | clear everything |
-| `r` | clear and pick a new staff line spacing |
-| `s` | save PNG |
-| `h` | hide / show the help panel |
+Choose mixed colors or lock black, red, blue, green or yellow. **Glob size**
+scales the musical marks; **Staff size** independently scales the five lines'
+spacing and thickness from 0.25× to 4× (default 1×). Marks stay anchored to
+the staff without changing their dot diameters. These sliders and density
+live in the right column; staff visibility appears below them. Staff visibility affects
+the current brush layer; artwork committed by switching brushes stays intact.
+**New variation** picks a new staff spacing and preserves the existing drawing.
 
 ## Tweaking
 
-Everything in `sketch.js` is built from `u`, the staff line spacing. The
+Everything in `sketch.js` is built from `u`, the base unit. `bs` scales the globs,
+while `staffSize` scales the line spacing and weight. The
 `SNIPPETS` table sets how often each snippet type is chosen, and
 `COLOR_WEIGHTS` sets the colour mix.
 

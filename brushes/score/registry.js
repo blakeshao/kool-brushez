@@ -1,0 +1,52 @@
+export default {
+  id: "score",
+  name: "Score",
+  category: "Rhythm & ribbons",
+  description:
+    "Five flowing staff lines, scattered with playful musical marks. Every stroke finds its own rhythm.",
+  hint: "Drag slowly for flowing ribbons. Click for a little musical moment.",
+  preview: new URL("./preview.png", import.meta.url).href,
+  controls: [
+    {
+      id: "size",
+      label: "Glob size",
+      caption: "Glob size",
+      type: "range",
+      min: 0.4,
+      max: 4,
+      step: 0.05,
+    },
+    {
+      id: "staffSize",
+      label: "Staff size",
+      note: "Scales the five lines' spacing and thickness independently of the globs.",
+      type: "range",
+      min: 0.25,
+      max: 4,
+      step: 0.05,
+    },
+    {
+      id: "density",
+      label: "Mark density",
+      type: "range",
+      min: 0.25,
+      max: 6,
+      step: 0.05,
+    },
+    {
+      id: "color",
+      label: "Ink palette",
+      type: "palette",
+      options: [
+        ["auto", "Playful mix"],
+        ["black", "Black", "#1b1b1b"],
+        ["red", "Red", "#e2242b"],
+        ["blue", "Blue", "#2a4fa8"],
+        ["green", "Green", "#1d9a47"],
+        ["yellow", "Yellow", "#f4d500"],
+      ],
+    },
+    { id: "staff", label: "Show staff lines", type: "toggle", key: "g" },
+  ],
+  load: () => import("./sketch.js"),
+};
