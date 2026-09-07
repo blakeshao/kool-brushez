@@ -364,7 +364,6 @@ select:focus-visible {
 }
 .panel-toggle span {
   writing-mode: vertical-rl;
-  text-orientation: upright;
   font-size: 10px;
   font-weight: 400;
   letter-spacing: 0.3px;
