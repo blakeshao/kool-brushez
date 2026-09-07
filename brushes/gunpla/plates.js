@@ -1,5 +1,6 @@
 import { PARTS, COMPONENT_POOLS } from "./components.js";
 import { plasticSprite } from "./material.js";
+import { canvasFont } from "../../shared/typography.js";
 
 export { COMPONENT_POOLS };
 export const INKS = {
@@ -102,7 +103,7 @@ export function drawComponent(ctx, part, x, y, width, height, edges) {
     ctx.fill();
     ctx.stroke();
     ctx.fillStyle = "#fff";
-    ctx.font = '6.8px "Arial Narrow", Arial, sans-serif';
+    ctx.font = canvasFont(6.8);
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     const number = part.kind === "ballcap" || part.kind === "bushing"
@@ -118,7 +119,7 @@ export function drawComponent(ctx, part, x, y, width, height, edges) {
     }
     if (part.molded && width > 40) {
       ctx.fillStyle = ink.edge;
-      ctx.font = '3.2px Arial, sans-serif';
+      ctx.font = canvasFont(3.2);
       ctx.fillText(`${part.number < 10 ? "0" : ""}${part.number}  ${part.kind === "ballcap" ? "PE" : "PS"}`, 0, height / 2 - 3);
     }
   }
@@ -141,9 +142,9 @@ export function drawHeading(ctx, target) {
   const wide = width >= 155;
   const material = settings.parts === "mechanical" ? "ABS樹脂：ABS" : "スチロール樹脂：PS";
   ctx.strokeRect(0, wide ? -17 : -25, 44, 11);
-  ctx.font = '9.5px "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif';
+  ctx.font = canvasFont(9.5);
   ctx.fillText(`${letter}パーツ`, 3, wide ? -8 : -16, 38);
-  ctx.font = `${wide ? 8 : 6}px "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif`;
+  ctx.font = canvasFont(wide ? 8 : 6);
   ctx.fillText(`（${material}）`, wide ? 47 : 0, wide ? -8 : -5, Math.max(25, wide ? width - 47 : width));
   ctx.restore();
 }

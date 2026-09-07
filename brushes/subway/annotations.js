@@ -1,3 +1,5 @@
+import { canvasFont } from "../../shared/typography.js";
+
 const INK = "#171b1e";
 const BLUE = "#287e9d";
 const TYPES = ["accessible", "transfer", "express", "bus", "rail", "airport", "ferry", "direction", "clock"];
@@ -16,7 +18,7 @@ export function stationDetail(path, stop) {
 export function annotationExtent(ctx, detail, size) {
   if (!detail) return { width: 0, height: 0 };
   ctx.save();
-  ctx.font = `${6 * size}px Helvetica, Arial, sans-serif`;
+  ctx.font = canvasFont(6 * size);
   const rowWidth = detail.type === "accessible" || detail.type === "transfer" || detail.type === "express"
     ? (14 + detail.services.length * 10) * size
     : 14 * size + ctx.measureText(detail.note).width;
@@ -35,7 +37,7 @@ export function badge(ctx, service, x, y, size, diamond = false) {
   } else ctx.arc(x, y, size, 0, Math.PI * 2);
   ctx.fill();
   ctx.fillStyle = ["#f9d51c", "#f4a02d"].includes(service.ink) ? INK : "#fff";
-  ctx.font = `700 ${size * 1.35}px Helvetica, Arial, sans-serif`;
+  ctx.font = canvasFont(size * 1.35, 700);
   ctx.textAlign = "center"; ctx.textBaseline = "middle";
   ctx.fillText(service.code, x, y + size * .04);
   ctx.restore();
@@ -91,12 +93,12 @@ export function drawAnnotation(ctx, detail, x, y, size) {
   if (["accessible", "transfer", "express"].includes(detail.type)) {
     detail.services.forEach((service, i) => badge(ctx, service, x + (16 + i * 10) * size, y + 5 * size, 3.7 * size, detail.type === "express"));
     if (detail.note) {
-      ctx.fillStyle = "#5a6268"; ctx.font = `${6 * size}px Helvetica, Arial, sans-serif`;
+      ctx.fillStyle = "#5a6268"; ctx.font = canvasFont(6 * size);
       ctx.textAlign = "left"; ctx.textBaseline = "top";
       ctx.fillText(detail.note, x, y + 11 * size);
     }
   } else {
-    ctx.fillStyle = "#5a6268"; ctx.font = `${6 * size}px Helvetica, Arial, sans-serif`;
+    ctx.fillStyle = "#5a6268"; ctx.font = canvasFont(6 * size);
     ctx.textAlign = "left"; ctx.textBaseline = "middle";
     ctx.fillText(detail.note, x + 13 * size, y + 5 * size);
   }

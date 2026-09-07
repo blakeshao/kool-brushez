@@ -1,5 +1,19 @@
+@font-face {
+  font-family: "Gorton Digital";
+  src: url("../assets/fonts/gorton-digital/GortonDigitalRegular.otf") format("opentype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Gorton Digital";
+  src: url("../assets/fonts/gorton-digital/GortonDigitalHeavy.otf") format("opentype");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
 :root {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Gorton Digital", sans-serif;
   font-synthesis: none;
   color: #111;
   background: #fff;
@@ -295,11 +309,8 @@ select:focus-visible {
   background: #fff;
   text-align: center;
   text-align-last: center;
-  font:
-    700 10px ui-monospace,
-    SFMono-Regular,
-    Menlo,
-    monospace;
+  font-size: 10px;
+  font-weight: 700;
   cursor: pointer;
 }
 .aspect-control::after {
@@ -362,8 +373,7 @@ select:focus-visible {
   writing-mode: vertical-rl;
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 1.3px;
-  text-transform: uppercase;
+  letter-spacing: 0.3px;
 }
 .panel-toggle[aria-expanded="false"] svg {
   transform: rotate(180deg);
@@ -391,8 +401,7 @@ select:focus-visible {
   margin: 0;
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 1.3px;
-  text-transform: uppercase;
+  letter-spacing: 0.3px;
 }
 .sliders {
   display: grid;
@@ -413,11 +422,7 @@ select:focus-visible {
   line-height: 1.5;
 }
 .slider-value {
-  font:
-    10px ui-monospace,
-    SFMono-Regular,
-    Menlo,
-    monospace;
+  font-size: 10px;
   color: inherit;
 }
 .line-slider {

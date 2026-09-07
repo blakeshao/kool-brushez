@@ -3,6 +3,7 @@ import { createStrands } from "./network.js";
 import { schedulePath, revealedDistance, prefix, detailOpacity, createFollower, followTo, arrivalAt, timingComplete } from "./animation.js";
 import { stationDetail, annotationExtent, drawAnnotation } from "./annotations.js";
 import { FAMILIES, COLORS, serviceAt } from "./palette.js";
+import { canvasFont } from "../../shared/typography.js";
 const BUNDLES = [
   [["blue", "A"], ["blue", "C"], ["orange", "D"], ["yellow", "N"]],
   [["red", "1"], ["red", "2"], ["green", "4"], ["green", "5"]],
@@ -165,7 +166,7 @@ export default function createBrush(p) {
     ctx.strokeStyle = BLACK;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.font = `700 ${6.5 * s}px Helvetica, Arial, sans-serif`;
+    ctx.font = canvasFont(6.5 * s, 700);
     if (route.startsService && distance > 0) {
       const origin = route.samples[0];
       ctx.save();
@@ -262,7 +263,7 @@ export default function createBrush(p) {
     for (const stop of stops) {
       const name = STATIONS[(route.nameIndex + stop.index) % STATIONS.length];
       const bold = stop.index % 4 === 2 || name.length > 1;
-      ctx.font = `${bold ? 700 : 400} ${8 * s}px Helvetica, Arial, sans-serif`;
+      ctx.font = canvasFont(8 * s, bold ? 700 : 400);
       const service = serviceAt(route, stop.d);
       const detail = stationDetail({ ...route, tracks: [service.service], services: service.services }, stop);
       const extra = annotationExtent(ctx, detail, s);
@@ -298,7 +299,7 @@ export default function createBrush(p) {
     for (const record of records) {
       if (distance <= record.at) continue;
       ctx.globalAlpha = detailOpacity(route.timing, distance, record.at + 6 * s);
-      ctx.font = `${record.bold ? 700 : 400} ${8 * s}px Helvetica, Arial, sans-serif`;
+      ctx.font = canvasFont(8 * s, record.bold ? 700 : 400);
       record.name.forEach((line, i) => ctx.fillText(line, record.left, record.top + i * 9 * s));
       ctx.globalAlpha = detailOpacity(route.timing, distance, record.at + 16 * s);
       drawAnnotation(ctx, record.detail, record.left, record.top + record.name.length * 9 * s, s);

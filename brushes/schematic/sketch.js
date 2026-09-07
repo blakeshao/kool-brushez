@@ -1,10 +1,12 @@
+import { FONT_NAME } from "../../shared/typography.js";
+
 export default function createBrush(engine) {
   // Schematic Brush
   // A p5.js brush that draws randomized technical schematics along each stroke:
   // modular-synth patch diagrams (crosshair pins, rounded modules, sweeping
   // patch cables) and CAD site-plan drafting (dimension lines with ticks,
   // callout bubbles on leaders, nested contours, hatching, section markers).
-  // Every annotation is a random number in a monospace face, placed clear of
+  // Every annotation is a random number in Gorton Digital, placed clear of
   // the numbers and node bodies already on the page. White page, black ink.
   //
   // Nodes are snapped to an invisible grid at intervals along the stroke and
@@ -15,8 +17,7 @@ export default function createBrush(engine) {
   // lands, and specks fly. The lines themselves stay straight and true.
   // Finished marks are baked into the paint layer.
 
-  // p5 quotes font names containing spaces; keep this CSS fallback list valid.
-  const FONT = 'Menlo,Consolas,monospace';
+  const FONT = FONT_NAME;
   const LABEL_SCALE = 1.5; // annotation size relative to the drafting geometry
   const PEN_SPEED = 0.7;   // px per ms the pen travels
   const CHAR_MS = 22;      // ms per typed character

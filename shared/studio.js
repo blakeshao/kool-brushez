@@ -1,11 +1,13 @@
 import P5 from "p5";
 import { History } from "./history.js";
 import { validateBrush } from "./registry.js";
+import { loadDrawingFonts } from "./typography.js";
 
 export const PAPER = { width: 1200, height: 840 };
 
 /** A single p5 canvas, shared artwork, and brush-independent editing tools. */
-export function createStudio(host, callbacks = {}, paper = PAPER) {
+export async function createStudio(host, callbacks = {}, paper = PAPER) {
+  await loadDrawingFonts();
   return new Promise((resolve) => {
     new P5((p) => {
       let base,

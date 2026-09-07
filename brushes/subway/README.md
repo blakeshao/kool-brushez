@@ -2,7 +2,7 @@
 
 Draw an imaginary subway network inspired by the supplied New York maps and
 Schematic's irregular offshoots: fine colored strands, rounded 45° and 90°
-bends, tiny station dots, service letters and compact Helvetica station names.
+bends, tiny station dots, service letters and compact Gorton Digital station names.
 The main strands follow your pen with a slight eased delay. At each turn, half
 the services end and replacement colors start as separate lines, marked with
 small open circles. The other services stay continuous through the bend.

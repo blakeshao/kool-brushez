@@ -25,7 +25,10 @@ npm run dev
 Open the local URL printed by Vite. `npm run build` creates a static site in
 `dist/`; `npm run preview` serves that production build locally. p5.js is
 installed locally, so the drawing engine doesn't depend on a CDN. The interface
-uses system fonts and plain CSS.
+uses locally bundled Gorton Digital (Regular and Heavy) and plain CSS, with
+mixed-case titles. Brush annotations use the same font; Japanese characters and
+other unsupported glyphs use system fallbacks. See the [font notice](assets/fonts/gorton-digital/NOTICE.md)
+for attribution and the author's noncommercial-use terms.
 
 ## Brushes
 
@@ -61,7 +64,7 @@ undo, redo, clear and PNG export at top right; aspect ratio at bottom left; and 
 at bottom right. Clear is undoable.
 
 The canvas automatically fits the middle section, with the entire paper visible.
-The bottom-left aspect selector offers **FIT** (match the section), **1:1**,
+The bottom-left aspect selector offers **Fit** (match the section), **1:1**,
 **4:3**, **3:4**, **16:9** and **9:16**. Fixed ratios stay centered within the
 available space. The paper uses a 1200-unit long edge, with rendering density matched to the
 screen and fitted size (up to 3×). For example, 16:9 exports at 1200 × 675 on a
