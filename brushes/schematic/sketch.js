@@ -6,7 +6,7 @@ export default function createBrush(engine) {
   // modular-synth patch diagrams (crosshair pins, rounded modules, sweeping
   // patch cables) and CAD site-plan drafting (dimension lines with ticks,
   // callout bubbles on leaders, nested contours, hatching, section markers).
-  // Every annotation is a random number in Gorton Digital, placed clear of
+  // Every annotation is a random number in DM Sans, placed clear of
   // the numbers and node bodies already on the page. White page, black ink.
   //
   // Nodes are snapped to an invisible grid at intervals along the stroke and

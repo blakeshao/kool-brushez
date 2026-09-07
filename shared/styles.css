@@ -1,19 +1,12 @@
 @font-face {
-  font-family: "Gorton Digital";
-  src: url("../assets/fonts/gorton-digital/GortonDigitalRegular.otf") format("opentype");
+  font-family: "DM Sans";
+  src: url("../assets/fonts/dm-sans/DMSans-Variable.woff2") format("woff2");
   font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Gorton Digital";
-  src: url("../assets/fonts/gorton-digital/GortonDigitalHeavy.otf") format("opentype");
-  font-style: normal;
-  font-weight: 700;
+  font-weight: 100 1000;
   font-display: swap;
 }
 :root {
-  font-family: "Gorton Digital", sans-serif;
+  font-family: "DM Sans", sans-serif;
   font-synthesis: none;
   color: #111;
   background: #fff;

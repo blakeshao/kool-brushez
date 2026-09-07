@@ -1,5 +1,5 @@
-export const FONT_NAME = "Gorton Digital";
-export const FONT_FAMILY = '"Gorton Digital", sans-serif';
+export const FONT_NAME = "DM Sans";
+export const FONT_FAMILY = '"DM Sans", sans-serif';
 
 export function canvasFont(size, weight = 400) {
   return `${weight} ${size}px ${FONT_FAMILY}`;
