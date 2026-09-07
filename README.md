@@ -1,4 +1,4 @@
-# Brushroom
+# kool-brushez
 
 A small p5.js drawing app with six expressive brushes and one shared canvas.
 Switch brushes without reloading or losing your drawing. Each brush keeps its

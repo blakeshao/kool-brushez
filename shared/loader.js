@@ -126,7 +126,7 @@ async function selectBrush(id, updateURL = true) {
   try {
     if (!(await studio.select(entry, params)) || version !== selectionVersion)
       return;
-    document.title = `${entry.name} — Brushroom`;
+    document.title = `${entry.name} — kool-brushez`;
     if (updateURL) {
       const url = new URL(location.href);
       url.searchParams.set("brush", entry.id);
