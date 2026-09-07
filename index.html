@@ -1,43 +1,253 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <title>p5 brushes</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <script src="https://cdn.jsdelivr.net/npm/p5@1.9.4/lib/p5.min.js"></script>
-  <style>
-    html, body { margin: 0; height: 100%; overflow: hidden; background: #fff; }
-    canvas { display: block; }
-    #picker {
-      position: fixed; left: 14px; top: 14px; z-index: 10;
-      font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
-      color: #111; background: rgba(255,255,255,0.92);
-      border: 1px solid #111; padding: 6px 10px; display: flex; gap: 8px; align-items: center;
-    }
-    #picker select { font: inherit; }
-    #hud {
-      position: fixed; left: 14px; bottom: 14px; z-index: 10;
-      font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
-      color: #111; background: rgba(255,255,255,0.92);
-      border: 1px solid #111; padding: 10px 12px;
-      pointer-events: none; user-select: none; max-width: 460px; white-space: nowrap;
-    }
-    #hud b { display: inline-block; min-width: 76px; }
-    #hud .row { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
-    #swatch { width: 14px; height: 14px; border-radius: 50%; border: 1px solid #111; }
-    #swatch.hidden, #hud.hidden { display: none; }
-  </style>
-</head>
-<body>
-  <div id="picker">
-    <label for="brush">brush</label>
-    <select id="brush"></select>
-  </div>
-  <div id="hud">
-    <div class="row"><span id="swatch"></span><span id="status"></span></div>
-    <div id="help"></div>
-  </div>
-  <script src="shared/hud.js"></script>
-  <script src="shared/loader.js"></script>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta
+      name="description"
+      content="A drawing canvas, a grid of expressive brushes, and simple controls."
+    />
+    <title>Brushroom</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23ffffff'/%3E%3Cpath d='m13 28 7-18m0 18 7-18' stroke='%23444749' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="shared/styles.css" />
+  </head>
+  <body>
+    <svg
+      class="icon-defs"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <defs>
+        <symbol id="i-brush" viewBox="0 0 24 24">
+          <path
+            d="m14 5 5 5M9 15 19 3l2 2L11 17M10 16c-1-2-4-1-4 1 0 2-2 3-3 3 4 2 8 0 7-4Z"
+          />
+        </symbol>
+        <symbol id="i-eraser" viewBox="0 0 24 24">
+          <path d="m14 3 7 7-10 11H7l-5-5L14 3ZM7 11l7 7M11 21h11" />
+        </symbol>
+        <symbol id="i-undo" viewBox="0 0 24 24">
+          <path d="m8 4-5 5 5 5M3 9h11a6 6 0 0 1 0 12" />
+        </symbol>
+        <symbol id="i-redo" viewBox="0 0 24 24">
+          <path d="m16 4 5 5-5 5m5-5H10a6 6 0 0 0 0 12" />
+        </symbol>
+        <symbol id="i-clear" viewBox="0 0 24 24">
+          <path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7m4-7v7" />
+        </symbol>
+        <symbol id="i-download" viewBox="0 0 24 24">
+          <path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5" />
+        </symbol>
+        <symbol id="i-chevron" viewBox="0 0 24 24">
+          <path d="m9 5 7 7-7 7" />
+        </symbol>
+        <symbol id="i-close" viewBox="0 0 24 24">
+          <path d="m6 6 12 12M6 18 18 6" />
+        </symbol>
+      </defs>
+    </svg>
+
+    <main class="studio-grid" id="app" aria-label="Drawing studio">
+      <div class="panel-rail brush-rail">
+        <button
+          id="brushes-toggle"
+          class="icon-button panel-toggle"
+          aria-label="Collapse brushes"
+          aria-controls="brush-list"
+          aria-expanded="true"
+          title="Collapse brushes (L)"
+        >
+          <svg aria-hidden="true"><use href="#i-chevron" /></svg>
+          <span aria-hidden="true">Brushes</span>
+        </button>
+      </div>
+      <div
+        id="brushes-backdrop"
+        class="panel-backdrop brush-backdrop"
+        aria-hidden="true"
+        hidden
+      ></div>
+      <nav id="brush-list" class="brush-list" aria-label="Choose a brush"></nav>
+      <section class="canvas-section" aria-label="Drawing workspace">
+        <div class="canvas-surround" id="canvas-surround">
+          <div id="artboard" class="artboard"><div id="canvas-host"></div></div>
+        </div>
+        <div
+          class="corner-tools top-left"
+          role="group"
+          aria-label="Drawing tools"
+        >
+          <button
+            id="draw-tool"
+            class="icon-button active"
+            aria-label="Brush"
+            aria-pressed="true"
+            title="Brush (B)"
+          >
+            <svg><use href="#i-brush" /></svg>
+          </button>
+          <button
+            id="erase-tool"
+            class="icon-button"
+            aria-label="Eraser"
+            aria-pressed="false"
+            title="Eraser (E)"
+          >
+            <svg><use href="#i-eraser" /></svg>
+          </button>
+        </div>
+        <div
+          class="corner-tools top-right"
+          role="group"
+          aria-label="Canvas actions"
+        >
+          <button
+            id="undo"
+            class="icon-button"
+            disabled
+            aria-label="Undo"
+            title="Undo (⌘/Ctrl Z)"
+          >
+            <svg><use href="#i-undo" /></svg>
+          </button>
+          <button
+            id="redo"
+            class="icon-button"
+            disabled
+            aria-label="Redo"
+            title="Redo (⌘/Ctrl Shift Z)"
+          >
+            <svg><use href="#i-redo" /></svg>
+          </button>
+          <button
+            id="clear"
+            class="icon-button"
+            aria-label="Clear canvas"
+            title="Clear canvas (C)"
+          >
+            <svg><use href="#i-clear" /></svg>
+          </button>
+          <button
+            id="export"
+            class="icon-button"
+            aria-label="Export PNG"
+            title="Export PNG (S)"
+          >
+            <svg><use href="#i-download" /></svg>
+          </button>
+        </div>
+        <div
+          class="corner-tools bottom-left"
+          role="group"
+          aria-label="Canvas proportions"
+        >
+          <label class="aspect-control" title="Canvas aspect ratio">
+            <span class="sr-only">Canvas aspect ratio</span>
+            <select id="aspect-ratio" aria-label="Canvas aspect ratio">
+              <option value="auto">FIT</option>
+              <option value="1:1">1:1</option>
+              <option value="4:3">4:3</option>
+              <option value="3:4">3:4</option>
+              <option value="16:9">16:9</option>
+              <option value="9:16">9:16</option>
+            </select>
+          </label>
+        </div>
+        <div
+          class="corner-tools bottom-right"
+          role="group"
+          aria-label="Help"
+        >
+          <button
+            id="help-toggle"
+            class="icon-button"
+            aria-label="Keyboard shortcuts"
+            title="Keyboard shortcuts (?)"
+          >
+            ?
+          </button>
+        </div>
+      </section>
+      <div id="sidebar-backdrop" class="panel-backdrop" aria-hidden="true" hidden></div>
+      <div class="panel-rail">
+        <button
+          id="sidebar-toggle"
+          class="icon-button panel-toggle"
+          aria-label="Collapse brush options"
+          aria-controls="sidebar"
+          aria-expanded="true"
+          title="Collapse brush options (H)"
+        >
+          <svg aria-hidden="true"><use href="#i-chevron" /></svg>
+          <span aria-hidden="true">Brush options</span>
+        </button>
+      </div>
+      <aside class="settings-panel" id="sidebar" aria-label="Brush options">
+        <div class="panel-heading">
+          <h1 id="settings-heading">Brush</h1>
+        </div>
+        <div
+          id="sliders"
+          class="sliders"
+          aria-label="Brush size and density"
+        ></div>
+        <div id="controls"></div>
+        <div class="panel-actions">
+          <button id="auto-fill">Auto-fill</button
+          ><button id="remix">New variation</button>
+        </div>
+      </aside>
+    </main>
+
+    <span id="status" class="sr-only" role="status">Loading brushes…</span>
+    <div id="brush-cursor" class="brush-cursor" hidden></div>
+    <div id="toast" class="toast" role="status" hidden></div>
+    <dialog id="help-dialog">
+      <div class="dialog-heading">
+        <h2>Shortcuts</h2>
+        <button
+          id="help-close"
+          class="icon-button"
+          aria-label="Close shortcuts"
+        >
+          <svg><use href="#i-close" /></svg>
+        </button>
+      </div>
+      <dl>
+        <dt>Brush / eraser</dt>
+        <dd>B / E</dd>
+        <dt>Undo / redo</dt>
+        <dd>⌘ / Ctrl Z / ⇧ Z</dd>
+        <dt>Brush size</dt>
+        <dd>[ / ]</dd>
+        <dt>Mark density</dt>
+        <dd>− / +</dd>
+        <dt>Palette / style</dt>
+        <dd>1–5 / 0 mix</dd>
+        <dt>Auto-fill</dt>
+        <dd>Space</dd>
+        <dt>New variation</dt>
+        <dd>R</dd>
+        <dt>Clear / export PNG</dt>
+        <dd>C / S</dd>
+        <dt>Staff lines / mirror</dt>
+        <dd>G / M</dd>
+        <dt>Brushes / brush options</dt>
+        <dd>L / H</dd>
+      </dl>
+      <p>
+        Slide left or right to adjust. Use arrow keys for small adjustments.
+      </p>
+      <p>
+        Switch brushes freely. Export a PNG to keep your drawing before closing
+        this tab.
+      </p>
+    </dialog>
+    <noscript>This drawing app needs JavaScript to run.</noscript>
+    <script type="module" src="shared/loader.js"></script>
+  </body>
 </html>

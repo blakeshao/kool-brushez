@@ -24,39 +24,28 @@ and grains of pigment caught just off the line. Ink pools where the pen
 lands and lifts, with lobed bleed around the pool, and sometimes drips. Blots have ragged
 outlines, numbers bleed into the paper, and most stamps throw specks.
 
-## Run
+## Run and controls
 
-Open `index.html` at the repo root and pick Schematic Brush, or open
-`index.html?brush=schematic` directly.
+Run `npm install` and `npm run dev` from the repository root, then choose
+Schematic in the brush library or open `/?brush=schematic`.
+The shared app provides mouse, pen and touch input, brush controls, an eraser,
+undo/redo, auto-fill and PNG export. See [the app guide](../../README.md) for
+shortcuts and URL presets, and [the brush interface](../README.md) for the
+module lifecycle.
 
-- `&auto` starts with a page that drafts itself.
-- `&style=patch`, `&style=cad` or `&style=mixed` presets the style.
-- `&mirror` turns on mirroring.
-
-## Controls
-
-| Key / action | Effect |
-| --- | --- |
-| drag | draft nodes, wiring and annotations along the stroke |
-| click | a single node with a number and an annotation |
-| `1` `2` `3` | lock style to patch / cad / mixed |
-| `0` | random style per stroke |
-| `[` `]` | brush size down / up |
-| `-` `=` | density down / up |
-| `m` | mirror every stamp across the page centre |
-| `space` | auto-fill the page |
-| `e` | toggle eraser |
-| `c` | clear everything |
-| `r` | clear and pick a new grid module (spacing and scale) |
-| `s` | save PNG |
-| `h` | hide / show the help panel |
+Choose random-per-stroke, patch, CAD or mixed drafting styles. Size and density
+use the right-column sliders; mirroring appears below them. **New variation** chooses a new
+grid module and preserves the existing drawing. Size scales the entire schematic
+uniformly: labels, stroke weights, grid spacing, dashes, ink texture and
+decorations keep the same proportions as the node shapes.
 
 ## Tweaking
 
 Everything in `sketch.js` is built from `u`, the grid module. `PATCH_NODES`
 and `CAD_NODES` weight which node kinds are chosen per style, `num`,
 `smallNum` and `refNum` generate the annotations, and `W` sets the line
-weights. `decorate` holds the per-node probabilities for each annotation,
+weights. `LABEL_SCALE` sets the numbers' size relative to the drawing.
+`decorate` holds the per-node probabilities for each annotation,
 and `PEN_SPEED` / `CHAR_MS` control how fast marks draw in. `INK` holds the
 wet-ink character: resample step, sideways wobble (0 keeps lines straight),
 blot raggedness, bleed reach and alpha, fiber and grain density, and the

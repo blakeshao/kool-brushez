@@ -23,34 +23,21 @@ Blobs that are already showing are left alone.
 The poster is dealt at random: blocks of up to 4 x 4 cells, pipes that walk
 in straight legs with right-angle turns, and single cells, most of which
 join a neighbour. Corners, including inner corners, are rounded with
-circular arcs, so one-cell-wide pipes get semicircular ends. The cursor is
-the shared black dot, the same in every mode.
+circular arcs, so one-cell-wide pipes get semicircular ends. The drawing cursor is the shared black dot; the common eraser shows its radius.
 
-## Run
+## Run and controls
 
-Open `index.html` at the repo root and pick Balloon Brush, or open
-`index.html?brush=balloon` directly.
+Run `npm install` and `npm run dev` from the repository root, then choose
+Balloon in the brush library or open `/?brush=balloon`.
+The shared app provides mouse, pen and touch input, brush controls, an eraser,
+undo/redo, auto-fill and PNG export. See [the app guide](../../README.md) for
+shortcuts and URL presets, and [the brush interface](../README.md) for the
+module lifecycle.
 
-- `&auto` starts with a page that paints itself: blobs cascade along a
-  few hidden wandering lines, one line after another.
-- `&color=red|blue|green|yellow|pink` forces every revealed blob to one
-  colour.
-
-## Controls
-
-| Key / action | Effect |
-| --- | --- |
-| drag | draw a line; the blobs under it soak in when you let go |
-| click | reveal the single blob under the cursor |
-| `1` `2` `3` `4` `5` | force revealed blobs to red / blue / green / yellow / pink |
-| `0` | use the poster's own colours |
-| `[` `]` | cell size down / up (re-deals the poster) |
-| `r` | re-deal the poster |
-| `space` | auto-fill with a few wandering lines |
-| `e` | toggle eraser: click or drag over a blob to hide it again |
-| `c` | hide everything (the poster stays the same) |
-| `s` | save PNG |
-| `h` | hide / show the help panel |
+The palette can use the poster's own colors or force red, blue, green, yellow
+or pink. Cell size and **New variation** generate a new pattern while preserving
+previous marks. The common eraser removes pixels from any brush. The original
+reveal, burst and drying animations are retained.
 
 ## Tweaking
 
@@ -76,5 +63,4 @@ then adds the unclipped soft rim and specks.
 `soakBlob` crossfades a blurred unclipped image of the blob into a cached
 crisp one, both from offscreen canvases. The blur uses the canvas filter
 and is skipped where the browser lacks it.
-`addLine` schedules the pops for a line, and `erase` repaints the paint
-layer without the blob under the eraser.
+`addLine` schedules the pops for a line, while the shared studio handles erasing and history.

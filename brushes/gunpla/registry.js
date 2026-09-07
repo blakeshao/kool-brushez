@@ -1,0 +1,32 @@
+export default {
+  id: "gunpla",
+  name: "Gunpla",
+  category: "Model-kit parts",
+  description: "Build a model-kit sprue one component at a time, joining numbered armor plates, joints and weapons with shared runner rails.",
+  hint: "Click for one component. Drag to grow the sprue, then draw alongside it to add another row of parts.",
+  preview: new URL("./preview.png", import.meta.url).href,
+  controls: [
+    { id: "size", label: "Component size", type: "range", min: 0.4, max: 2.5, step: 0.05 },
+    { id: "density", label: "Component density", type: "range", min: 0.4, max: 1.8, step: 0.05,
+      note: "Controls the spacing between individual components in the shared runner grid." },
+    { id: "variation", label: "Component size variation", caption: "Size variation", type: "range", min: 0, max: 2, step: 0.05,
+      note: "Varies the scale of each mold. Small connectors and long weapons retain their own proportions." },
+    { id: "details", label: "Part detail", caption: "Details", type: "range", min: 0, max: 2, step: 0.05,
+      note: "Adds recessed panels, vents, fasteners and molding marks." },
+    { id: "texture", label: "Surface grain", caption: "Surface grain", type: "range", min: 0, max: 2, step: 0.05,
+      note: "Controls subtle molded-plastic grain. White faces, rounded rims and recessed details remain smooth." },
+    { id: "color", label: "Plastic color", type: "palette", options: [
+      ["white", "White plastic", "#f5f5f1"],
+      ["graphite", "Neutral gray", "#c1c3c0"],
+      ["blue", "Runner blue", "#4169b1"],
+      ["red", "Runner red", "#bb5146"],
+      ["olive", "Runner olive", "#7a8154"],
+    ] },
+    { id: "parts", label: "Components", type: "select", options: [
+      ["mixed", "Complete kit"], ["armor", "Armor plates"],
+      ["mechanical", "Joints & thrusters"], ["weapons", "Weapons & shields"],
+    ] },
+    { id: "labels", label: "Part numbers", note: "Circled numbers, Japanese material labels and unused-part crosses.", type: "toggle" },
+  ],
+  load: () => import("./sketch.js"),
+};
