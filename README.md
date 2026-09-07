@@ -26,7 +26,8 @@ Open the local URL printed by Vite. `npm run build` creates a static site in
 `dist/`; `npm run preview` serves that production build locally. p5.js is
 installed locally, so the drawing engine doesn't depend on a CDN. The interface
 uses locally bundled DM Sans (variable weight) and plain CSS, with
-mixed-case titles. Brush annotations use the same font; Japanese characters and
+uppercase titles in regular weight and upright letters stacked in the vertical
+panel labels. Brush annotations use the same font; Japanese characters and
 other unsupported glyphs use system fallbacks. See the [font notice](assets/fonts/dm-sans/NOTICE.md)
 for attribution and the SIL Open Font License.
 

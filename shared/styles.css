@@ -364,9 +364,11 @@ select:focus-visible {
 }
 .panel-toggle span {
   writing-mode: vertical-rl;
+  text-orientation: upright;
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.3px;
+  text-transform: uppercase;
 }
 .panel-toggle[aria-expanded="false"] svg {
   transform: rotate(180deg);
@@ -393,8 +395,9 @@ select:focus-visible {
 .panel-heading h1 {
   margin: 0;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 400;
   letter-spacing: 0.3px;
+  text-transform: uppercase;
 }
 .sliders {
   display: grid;
@@ -592,7 +595,8 @@ dialog::backdrop {
 }
 .dialog-heading h2 {
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 400;
+  text-transform: uppercase;
   margin: 0;
 }
 .dialog-heading .icon-button {
