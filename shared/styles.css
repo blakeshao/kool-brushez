@@ -366,7 +366,7 @@ select:focus-visible {
   writing-mode: vertical-rl;
   font-size: 10px;
   font-weight: 400;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
 }
 .panel-toggle[aria-expanded="false"] svg {
