@@ -24,6 +24,7 @@ export default function createBrush(engine) {
 
   const NEEDLE_LEN = 44;     // px at size 1
   const SHADOW_DIST = 7;     // px the drop shadow is offset, at size 1
+  const SHADOW_ALPHA = 60;   // capped shadow opacity (0-255), however many stamps overlap
   const NEEDLES_PER_STAMP = 6;
   const SPREAD = 0.55;       // rad, +/- around the heading a needle may point
   const STAMP_SPACING = 5;   // px of travel between stamps, at size 1 / density 1
@@ -33,8 +34,8 @@ export default function createBrush(engine) {
   const ORNAMENT_GAP_MIN = 3;   // minimum spacing between ornaments, as a multiple of their radius
   const ORNAMENT_GAP_MAX = 8;
 
-  let paint;         // finished needles
-  let ornamentLayer; // finished ornaments, composited on top of the needles
+  let paint;         // finished needles and ornaments, in the order drawn
+  let shadowMask;    // accumulated needle-shadow silhouette, composited at a fixed capped opacity
   let bs = 1;        // size multiplier
   let density = 1;   // stamps per unit of drag distance
   let colorLock = null; // one of PALETTE's keys, or null for mixed greens
@@ -46,7 +47,7 @@ export default function createBrush(engine) {
 
   function setup(params = new URLSearchParams()) {
     paint = makeLayer();
-    ornamentLayer = makeLayer();
+    shadowMask = makeLayer();
     if (PALETTE[params.get("color")]) colorLock = params.get("color");
     if (params.has("ornaments")) ornaments = params.get("ornaments") !== "false";
   }
@@ -59,8 +60,12 @@ export default function createBrush(engine) {
 
   function draw() {
     advanceStroke();
+    // the mask can be locally opaque where many stamps overlap; tinting caps
+    // the shadow's visible opacity at composite time regardless of that overlap
+    engine.tint(255, SHADOW_ALPHA);
+    engine.image(shadowMask, 0, 0);
+    engine.noTint();
     engine.image(paint, 0, 0);
-    engine.image(ornamentLayer, 0, 0);
   }
 
   // ---------------------------------------------------------------- stroke
@@ -110,19 +115,22 @@ export default function createBrush(engine) {
 
   // Six (times density) needles splay out from (x, y) around `ang`, each a
   // faint offset shadow plus a crisp colored line on top, as in the original.
+  // Shadows accumulate into a persistent mask rather than being blended
+  // directly into the paint layer, so however many stamps overlap along a
+  // stroke, `draw()` can cap the shadow's visible opacity at composite time
+  // instead of many low-alpha strokes stacking toward opaque black.
   function stampNeedles(x, y, ang) {
     const n = engine.max(1, engine.round(NEEDLES_PER_STAMP * density));
     const len = NEEDLE_LEN * bs;
     const shadow = SHADOW_DIST * bs;
+    shadowMask.stroke(20, 24, 16, 120);
+    shadowMask.strokeWeight(1.3 * bs);
     for (let i = 0; i < n; i++) {
       const a = ang + engine.random(-SPREAD, SPREAD);
       const l = len * engine.random(0.75, 1.15);
       const ex = x - engine.cos(a) * l;
       const ey = y - engine.sin(a) * l;
-
-      paint.stroke(20, 24, 16, 16);
-      paint.strokeWeight(1.3 * bs);
-      paint.line(x + shadow, y + shadow, ex + shadow, ey + shadow);
+      shadowMask.line(x + shadow, y + shadow, ex + shadow, ey + shadow);
 
       const col = needleColor();
       paint.stroke(col);
@@ -166,7 +174,7 @@ export default function createBrush(engine) {
     const ox = x + engine.sin(swing) * hangLen;
     const oy = y + engine.cos(swing) * hangLen;
 
-    const ctx = ornamentLayer.drawingContext;
+    const ctx = paint.drawingContext;
     ctx.save();
     ctx.strokeStyle = "rgba(90,70,40,0.55)";
     ctx.lineWidth = engine.max(0.6, 0.8 * bs);
@@ -177,13 +185,13 @@ export default function createBrush(engine) {
 
     // a soft drop shadow, offset down and to the side, behind the sphere
     const shx = ox + rad * 0.22, shy = oy + rad * 0.3;
-    const shadowGrad = ctx.createRadialGradient(shx, shy, 0, shx, shy, rad * 1.15);
-    shadowGrad.addColorStop(0, "rgba(15,15,10,0.25)");
-    shadowGrad.addColorStop(0.7, "rgba(15,15,10,0.11)");
+    const shadowGrad = ctx.createRadialGradient(shx, shy, 0, shx, shy, rad * 1.25);
+    shadowGrad.addColorStop(0, "rgba(15,15,10,0.2)");
+    shadowGrad.addColorStop(0.6, "rgba(15,15,10,0.09)");
     shadowGrad.addColorStop(1, "rgba(15,15,10,0)");
     ctx.fillStyle = shadowGrad;
     ctx.beginPath();
-    ctx.arc(shx, shy, rad * 1.15, 0, engine.TWO_PI);
+    ctx.arc(shx, shy, rad * 1.25, 0, engine.TWO_PI);
     ctx.fill();
 
     // a brushed-metal cap: a horizontal linear gradient rather than a flat fill
@@ -218,7 +226,7 @@ export default function createBrush(engine) {
   function clearAll() {
     st = null;
     paint.clear();
-    ornamentLayer.clear();
+    shadowMask.clear();
     lastOrnamentX = null; lastOrnamentY = null;
   }
 
@@ -269,7 +277,7 @@ export default function createBrush(engine) {
     setup,
     resize() {
       clearAll();
-      for (const layer of [paint, ornamentLayer]) {
+      for (const layer of [paint, shadowMask]) {
         if (layer.pixelDensity() !== engine.pixelDensity()) layer.pixelDensity(engine.pixelDensity());
         layer.resizeCanvas(engine.width, engine.height);
         layer.strokeCap(engine.ROUND);
