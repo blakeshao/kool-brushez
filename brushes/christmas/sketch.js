@@ -35,7 +35,8 @@ export default function createBrush(engine) {
   const ORNAMENT_GAP_MAX = 8;
 
   let paint;         // finished needles and ornaments, in the order drawn
-  let shadowMask;    // accumulated needle-shadow silhouette, composited at a fixed capped opacity
+  let shadowMask;    // accumulated needle-shadow silhouette; a stamp only ever adds a
+                     // few cheap line draws here, never a clear, so it stays inexpensive
   let bs = 1;        // size multiplier
   let density = 1;   // stamps per unit of drag distance
   let colorLock = null; // one of PALETTE's keys, or null for mixed greens
@@ -61,7 +62,9 @@ export default function createBrush(engine) {
   function draw() {
     advanceStroke();
     // the mask can be locally opaque where many stamps overlap; tinting caps
-    // the shadow's visible opacity at composite time regardless of that overlap
+    // the shadow's visible opacity at composite time regardless of that overlap.
+    // This costs one extra full-layer image() per frame, the same order of cost
+    // as the multi-layer compositing other brushes in this codebase already do.
     engine.tint(255, SHADOW_ALPHA);
     engine.image(shadowMask, 0, 0);
     engine.noTint();
@@ -115,16 +118,17 @@ export default function createBrush(engine) {
 
   // Six (times density) needles splay out from (x, y) around `ang`, each a
   // faint offset shadow plus a crisp colored line on top, as in the original.
-  // Shadows accumulate into a persistent mask rather than being blended
-  // directly into the paint layer, so however many stamps overlap along a
-  // stroke, `draw()` can cap the shadow's visible opacity at composite time
-  // instead of many low-alpha strokes stacking toward opaque black.
+  // Shadows accumulate into a persistent mask with a few cheap line draws (no
+  // per-stamp clear or composite); `draw()` caps the mask's visible opacity
+  // once per frame at composite time, so however many stamps overlap along a
+  // stroke, the shadow never stacks toward opaque black.
   function stampNeedles(x, y, ang) {
     const n = engine.max(1, engine.round(NEEDLES_PER_STAMP * density));
     const len = NEEDLE_LEN * bs;
     const shadow = SHADOW_DIST * bs;
     shadowMask.stroke(20, 24, 16, 120);
     shadowMask.strokeWeight(1.3 * bs);
+    paint.strokeWeight(engine.max(1, 1.1 * bs));
     for (let i = 0; i < n; i++) {
       const a = ang + engine.random(-SPREAD, SPREAD);
       const l = len * engine.random(0.75, 1.15);
@@ -132,29 +136,29 @@ export default function createBrush(engine) {
       const ey = y - engine.sin(a) * l;
       shadowMask.line(x + shadow, y + shadow, ex + shadow, ey + shadow);
 
-      const col = needleColor();
-      paint.stroke(col);
-      paint.strokeWeight(engine.max(1, 1.1 * bs));
+      paint.stroke(...needleColor());
       paint.line(x, y, ex, ey);
     }
   }
 
+  // Returns [r, g, b, a] rather than a p5.Color, so stroke() can take the
+  // channels directly and skip allocating a Color object per needle.
   function needleColor() {
     if (colorLock) {
       const [r, g, b] = PALETTE[colorLock];
       const j = engine.random(-16, 16);
-      return engine.color(
+      return [
         engine.constrain(r + j, 0, 255),
         engine.constrain(g + j, 0, 255),
         engine.constrain(b + j, 0, 255),
-        235
-      );
+        235,
+      ];
     }
     // a random green channel, as in the original, with a touch of olive tint
     // and a randomize()-tunable hue shift
     const g = engine.constrain(engine.random(70, 255) + hueShift, 40, 255);
     const r = g * engine.random(0.15, 0.35);
-    return engine.color(r, g, r * 0.55, 235);
+    return [r, g, r * 0.55, 235];
   }
 
   // A small hanging bauble: a string down from the branch, a glossy
