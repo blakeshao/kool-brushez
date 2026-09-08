@@ -107,7 +107,7 @@ focused button keeps the button's normal keyboard behavior.
 ### Direct links
 
 `?brush=score`, `?brush=schematic`, `?brush=balloon`, `?brush=subway`,
-`?brush=crowd`, and `?brush=gunpla` select a brush on load.
+`?brush=crowd`, `?brush=gunpla`, and `?brush=christmas` select a brush on load.
 Add `&auto` for an automatically painted page. Existing presets still work:
 `&style=patch|cad|mixed` and `&mirror` for Schematic, or
 `&color=red|blue|green|yellow|pink` for Balloon. Subway supports
@@ -124,6 +124,7 @@ Gunpla supports `&parts=mixed|armor|mechanical|weapons`,
 `&texture=0` to `2`, and `&details=0` to `2`. Its 37 molds retain their native
 size differences, with molded white plastic shading, subtle surface grain and
 Japanese material annotations. Fourteen molds are traced from the reference scan.
+Christmas Branch supports `&color=pine|spruce|frost` and `&ornaments=false`.
 
 ## Layout
 
