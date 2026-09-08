@@ -165,3 +165,7 @@ test:browser` uses it instead. Browser tests start their own server on port
 4178 and cover compositing across brushes, undo/redo, erasing, resize, PNG
 export, touch, control persistence, keyboard isolation, auto-fill, rapid
 switching, slider dragging/keyboard adjustment, aspect ratios, Retina compositing and export dimensions. Unit tests cover registration, factory isolation and history limits.
+
+## License
+
+MIT. See [LICENSE](LICENSE). The bundled DM Sans font is covered separately by the SIL Open Font License noted above.
