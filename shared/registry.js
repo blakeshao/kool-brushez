@@ -4,6 +4,8 @@ import balloon from "../brushes/balloon/registry.js";
 import subway from "../brushes/subway/registry.js";
 import crowd from "../brushes/crowd/registry.js";
 import gunpla from "../brushes/gunpla/registry.js";
+import marble from "../brushes/marble/registry.js";
+import pacman from "../brushes/pacman/registry.js";
 
 /**
  * Each folder registers its own metadata, controls, preview and lazy JS entry.
@@ -34,7 +36,16 @@ export function createRegistry(entries) {
   return registry;
 }
 
-export const brushes = createRegistry([score, schematic, balloon, subway, crowd, gunpla]);
+export const brushes = createRegistry([
+  score,
+  schematic,
+  balloon,
+  subway,
+  crowd,
+  gunpla,
+  marble,
+  pacman,
+]);
 export const requiredMethods = [
   "setup",
   "resize",

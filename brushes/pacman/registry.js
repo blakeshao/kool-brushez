@@ -1,0 +1,30 @@
+export default {
+  id: "pacman",
+  name: "Pac-Man",
+  category: "Maze & chase",
+  description:
+    "Every stroke is a corridor of the maze. It snaps to the grid, fills with pellets, and Pac-Man runs it at arcade pace with the ghosts closing in behind.",
+  hint: "Drag to cut a corridor. Pac-Man is slower than your hand, so he clears part of it and the rest keeps its pellets.",
+  preview: new URL("./preview.png", import.meta.url).href,
+  controls: [
+    { id: "size", label: "Maze scale", type: "range", min: 0.4, max: 3, step: 0.05,
+      note: "Scales the tile grid, and with it the walls, pellets and every character." },
+    { id: "density", label: "Pellet density", type: "range", min: 0.4, max: 2, step: 0.05,
+      note: "How many tiles apart the pellets sit down the middle of a corridor." },
+    { id: "chase", label: "Chase length", caption: "Chase", type: "range", min: 0.3, max: 3, step: 0.05,
+      note: "How far Pac-Man runs before he stops. Short chases leave most of a corridor still laid with pellets." },
+    { id: "ghosts", label: "Ghosts in pursuit", caption: "Ghosts", type: "range", min: 0, max: 4, step: 1,
+      note: "Blinky, Pinky, Inky and Clyde join the chase in that order, strung out behind him." },
+    { id: "color", label: "Board colour", type: "palette", options: [
+      ["auto", "New board each stroke"],
+      ["blue", "Level one blue", "#2121de"],
+      ["rose", "Rose board", "#e33bb0"],
+      ["cyan", "Ice board", "#21c8de"],
+      ["amber", "Amber board", "#dd9021"],
+      ["green", "Green board", "#2bb14a"],
+    ] },
+    { id: "extras", label: "Bonus fruit", key: "f", type: "toggle",
+      note: "Cherries, strawberries and the rest, each leaving its score where it was eaten." },
+  ],
+  load: () => import("./sketch.js"),
+};

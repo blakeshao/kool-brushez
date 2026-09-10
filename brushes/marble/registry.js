@@ -1,0 +1,31 @@
+export default {
+  id: "marble",
+  name: "Marbling",
+  category: "Fluid pours & veining",
+  description:
+    "Float ink on size and push it around. Every drop displaces the ink already there, so pours nest into veins, cells and feathered swirls that never repeat.",
+  hint: "Drag slowly to pour bands of ink, quickly to feather them. Click the same spot twice for nested rings.",
+  preview: new URL("./preview.png", import.meta.url).href,
+  controls: [
+    { id: "size", label: "Drop size", type: "range", min: 0.4, max: 3, step: 0.05,
+      note: "Scales each drop of ink, and with it the width of the bands it nests around itself." },
+    { id: "density", label: "Pour density", type: "range", min: 0.4, max: 2.2, step: 0.05,
+      note: "How closely drops follow one another along a stroke. Dense pours nest into finer veins." },
+    { id: "rake", label: "Rake", caption: "Rake", type: "range", min: 0, max: 2, step: 0.05,
+      note: "How far the ink travels with the pen, drawing bands out into feathered points. Zero leaves plain nested drops." },
+    { id: "swirl", label: "Swirl", caption: "Swirl", type: "range", min: 0, max: 2, step: 0.05,
+      note: "How much a turn of the pen folds the veins back on themselves into whorls and cells." },
+    { id: "shimmer", label: "Metallic leaf", caption: "Metallic", type: "range", min: 0, max: 2, step: 0.05,
+      note: "How often a band pours as leafing, with streaked highlights and fine flecks." },
+    { id: "color", label: "Pour palette", type: "palette", options: [
+      ["auto", "Mixed pours"],
+      ["indigo", "Indigo pour", "#1a33bd"],
+      ["opal", "Opal & gold", "#f3c0d9"],
+      ["ember", "Ember & aqua", "#d9491c"],
+      ["mist", "Sea mist", "#7ea9c6"],
+    ] },
+    { id: "veins", label: "Fine veins", key: "v", type: "toggle",
+      note: "The pale line size leaves where two pigments meet." },
+  ],
+  load: () => import("./sketch.js"),
+};

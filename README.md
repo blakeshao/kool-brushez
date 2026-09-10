@@ -41,13 +41,17 @@ for attribution and the SIL Open Font License.
 | [Subway](brushes/subway/README.md)       | Animated branching subway lines, station names and transit symbols |
 | [Crowd](brushes/crowd/README.md)         | Royal-blue people tracing out from their feet, then swaying and breathing independently |
 | [Gunpla](brushes/gunpla/README.md)       | Grow a connected model-kit sprue one numbered component at a time |
+| [Marbling](brushes/marble/README.md)     | Float ink and push it around, nesting pours into veins, cells and feathered swirls |
+| [Pac-Man](brushes/pacman/README.md)      | Cut a grid-snapped maze corridor, then chase down it at arcade pace |
 
 Click a sample stroke in the left column to switch brushes. Drag the sliders
 in the right column to change size and density. Score starts at 0.75× glob size
 and has a separate **Staff size** slider for line spacing and thickness (default 1×);
 Schematic starts at 0.4×, Balloon at 0.5×, Subway at 1× with four parallel routes,
 Crowd at 1× with royal-blue outlines, mixed poses and occasional scene objects,
-and Gunpla at 1× with white plastic sprues and a complete mix of components. Arrow keys make small
+Gunpla at 1× with white plastic sprues and a complete mix of components,
+Marbling at 1× with mixed pours and a moderate rake, and Pac-Man at 1× with a
+new board colour each stroke and two ghosts in pursuit. Arrow keys make small
 adjustments. Colors and other brush-specific options appear below the sliders.
 The **Brush options** toggle stays on the far-right edge. Its arrow points right
 to collapse the panel and left to expand it; **H** also toggles the panel and
@@ -58,7 +62,8 @@ the right; tapping the canvas outside dismisses them without drawing, as does
 **Escape**, and choosing a brush closes them. Desktop
 collapse preferences survive switching between screen sizes. Brush settings survive switching. **Auto-fill** lets the
 current brush draw for you; **New variation** keeps your artwork and starts a
-new staff spacing, drafting grid, balloon pattern, subway service bundle, crowd grouping or sprue layout.
+new staff spacing, drafting grid, balloon pattern, subway service bundle, crowd
+grouping, sprue layout, pour sequence or board.
 
 Joined square buttons occupy the canvas corners: brush and eraser at top left;
 undo, redo, clear and PNG export at top right; aspect ratio at bottom left; and help
@@ -107,7 +112,8 @@ focused button keeps the button's normal keyboard behavior.
 ### Direct links
 
 `?brush=score`, `?brush=schematic`, `?brush=balloon`, `?brush=subway`,
-`?brush=crowd`, and `?brush=gunpla` select a brush on load.
+`?brush=crowd`, `?brush=gunpla`, `?brush=marble`, and `?brush=pacman`
+select a brush on load.
 Add `&auto` for an automatically painted page. Existing presets still work:
 `&style=patch|cad|mixed` and `&mirror` for Schematic, or
 `&color=red|blue|green|yellow|pink` for Balloon. Subway supports
@@ -124,6 +130,12 @@ Gunpla supports `&parts=mixed|armor|mechanical|weapons`,
 `&texture=0` to `2`, and `&details=0` to `2`. Its 37 molds retain their native
 size differences, with molded white plastic shading, subtle surface grain and
 Japanese material annotations. Fourteen molds are traced from the reference scan.
+Marbling supports `&color=auto|indigo|opal|ember|mist`, `&size=0.4` to `3`,
+`&density=0.4` to `2.2`, `&veins=false`, and `&rake=0`, `&swirl=0`,
+`&shimmer=0` to `2` for feathering, whorls and metallic leaf.
+Pac-Man supports `&color=auto|blue|rose|cyan|amber|green`, `&size=0.4` to `3`,
+`&density=0.4` to `2`, `&chase=0.3` to `3` for how far Pac-Man runs before he
+stops, `&ghosts=0` to `4`, and `&extras=false` to drop the bonus fruit.
 
 ## Layout
 

@@ -9,7 +9,7 @@ import {
 import { History } from "../shared/history.js";
 
 test("all registered brush modules implement the shared lifecycle", async () => {
-  assert.deepEqual([...brushes.keys()], ["score", "schematic", "balloon", "subway", "crowd", "gunpla"]);
+  assert.deepEqual([...brushes.keys()], ["score", "schematic", "balloon", "subway", "crowd", "gunpla", "marble", "pacman"]);
   for (const [id, registration] of brushes) {
     const module = await registration.load();
     const brush = validateBrush(module.default({}));
